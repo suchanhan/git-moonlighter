@@ -27,8 +27,11 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
     (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
     (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
-
-    (SDL_KEYDOWN, SDLK_SPACE): SPACE
+    (SDL_KEYDOWN, SDLK_SPACE): SPACE,
+    (SDL_KEYDOWN, SDLK_UP): UP_DOWN,
+    (SDL_KEYDOWN, SDLK_DOWN): DOWN_DOWN,
+    (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
+    (SDL_KEYUP, SDLK_LEFT): LEFT_UP
 }
 
 
@@ -60,9 +63,9 @@ class IdleState:
 
     def draw(boy):
         if boy.dir == 1:
-            boy.image.clip_draw(int(boy.frame) * 22, 37, 22, 9, boy.x, boy.y)
+            boy.Idleimage.clip_draw(int(boy.frame) * 80, 100, 80, 100, boy.x, boy.y)
         else:
-            boy.image.clip_draw(int(boy.frame) * 22, 74, 22, 9, boy.x, boy.y)
+            boy.Idleimage.clip_draw(int(boy.frame) * 80, 0, 80, 100, boy.x, boy.y)
 
 
 class RunState:
@@ -88,12 +91,15 @@ class RunState:
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         boy.x += boy.velocity * game_framework.frame_time
         boy.x = clamp(25, boy.x, 1600 - 25)
+        boy.y += boy.velocity * game_framework.frame_time
+        boy.y = clamp(0, boy.y, 900)
+
 
     def draw(boy):
         if boy.dir == 1:
-            boy.image.clip_draw(int(boy.frame) * 23, 37, 22, 100, boy.x, boy.y)
+            boy.RunimageLR.clip_draw(int(boy.frame) * 35, 0, 35, 40, boy.x, boy.y)
         else:
-            boy.image.clip_draw(int(boy.frame) * 23, 37, 22, 100, boy.x, boy.y)
+            boy.RunimageLR.clip_draw(int(boy.frame) * 35, 40 ,35, 40, boy.x, boy.y)
 
 
 class SleepState:
@@ -129,7 +135,8 @@ class Boy:
     def __init__(self):
         self.x, self.y = 1600 // 2, 90
         # Boy is only once created, so instance image loading is fine
-        self.image = load_image('will_frontback.png')
+        self.RunimageLR = load_image('will_leftright.png')
+        self.Idleimage = load_image('will_idle.png')
         self.dir = 1
         self.velocity = 0
         self.frame = 0
