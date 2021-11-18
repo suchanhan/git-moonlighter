@@ -8,20 +8,20 @@ import game_world
 import LoadingState
 
 from will import Boy
-from DungeonMap import DungeonMap1
-from potal import Potal
-from golem import Golem
+from house import House
+from house_door import House_door
 
 
 
 
 
-name = "MainState"
+
+name = "HouseState"
 
 boy = None
-DungeonMap = None
-golem = None
-potal = None
+village = None
+house_door = None
+house = None
 
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
@@ -39,17 +39,14 @@ def enter():
     boy = Boy()
     game_world.add_object(boy, 1)
 
-    global DungeonMap
-    DungeonMap = DungeonMap1()
-    game_world.add_object(DungeonMap, 0)
 
-    global golem
-    golem = Golem()
-    game_world.add_object(golem, 1)
+    global house
+    house = House()
+    game_world.add_object(house,0)
 
-    global potal
-    potal = Potal()
-    game_world.add_object(potal, 1)
+    global house_door
+    house_door = House_door()
+    game_world.add_object(house_door, 1)
 
 
 def exit():
@@ -77,7 +74,7 @@ def handle_events():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
-    if collide(boy,potal):
+    if collide(boy, house_door):
         game_framework.change_state(LoadingState)
 
 
@@ -86,9 +83,3 @@ def draw():
     for game_object in game_world.all_objects():
         game_object.draw()
     update_canvas()
-
-
-
-
-
-
