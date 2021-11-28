@@ -124,6 +124,7 @@ class RunState:
 
 
     def exit(boy, event):
+        boy.exit()
         pass
 
     def do(boy):
